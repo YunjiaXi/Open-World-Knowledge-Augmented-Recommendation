@@ -1,3 +1,16 @@
+# Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models
+Source code for our paper :
+[Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models](https://arxiv.org/abs/2306.10933)
+
+## Requirements
+```
+python>=3.8
+transformers>=4.22.2
+numpy
+pytorch>=1.10.0
+scikit-learn
+```
+
 ## Setup
 
 1. Download dataset
