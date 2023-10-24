@@ -38,3 +38,15 @@ scikit-learn
    Run `python run_ctr.py` for ctr task
 
    Run `python run_rerank.py` for reranking task
+
+
+If you find this work useful, please cite our paper and give us a shining star 🌟
+
+```
+@article{xi2023openworld,
+  title={Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models},
+  author={Yunjia Xi and Weiwen Liu and Jianghao Lin and Jieming Zhu and Bo Chen and Ruiming Tang and Weinan Zhang and Rui Zhang and Yong Yu},
+  journal={arXiv preprint arXiv:2306.10933},
+  year={2023}
+}
+```
