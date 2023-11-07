@@ -1,3 +1,16 @@
+# Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models
+Source code for our paper :
+[Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models](https://arxiv.org/abs/2306.10933)
+
+## Requirements
+```
+python>=3.8
+transformers>=4.22.2
+numpy
+pytorch>=1.10.0
+scikit-learn
+```
+
 ## Setup
 
 1. Download dataset
@@ -25,3 +38,15 @@
    Run `python run_ctr.py` for ctr task
 
    Run `python run_rerank.py` for reranking task
+
+
+If you find this work useful, please cite our paper and give us a shining star 🌟
+
+```
+@article{xi2023openworld,
+  title={Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models},
+  author={Yunjia Xi and Weiwen Liu and Jianghao Lin and Jieming Zhu and Bo Chen and Ruiming Tang and Weinan Zhang and Rui Zhang and Yong Yu},
+  journal={arXiv preprint arXiv:2306.10933},
+  year={2023}
+}
+```
