@@ -12,18 +12,21 @@ rerank_item_from_hist = 4
 rerank_hist_len = 10
 rerank_list_len = 10
 ctr_hist_len = 10
-rating_threshold = 4
 
 
 def generate_ctr_data(sequence_data, lm_hist_idx, uid_set):
     # print(list(lm_hist_idx.values())[:10])
     full_data = []
+    total_label = []
     for uid in uid_set:
         start_idx = lm_hist_idx[str(uid)]
         item_seq, rating_seq = sequence_data[str(uid)]
         for idx in range(start_idx, len(item_seq)):
-            full_data.append([uid, idx, 1 if rating_seq[idx] > rating_threshold else 0])
-    print('user num', len(uid_set), 'data num', len(full_data))
+            label = 1 if rating_seq[idx] > rating_threshold else 0
+            full_data.append([uid, idx, label])
+            total_label.append(label)
+    print('user num', len(uid_set), 'data num', len(full_data), 'pos ratio',
+          sum(total_label) / len(total_label))
     print(full_data[:5])
     return full_data
 
@@ -57,7 +60,8 @@ def generate_rerank_data(sequence_data, lm_hist_idx, uid_set, item_set):
 def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, dataset_name):
     itemid2title = datamap['itemid2title']
     attrid2name = datamap['id2attribute']
-    user2attribute = datamap['user2attribute']
+    if dataset_name == 'ml-1m':
+        user2attribute = datamap['user2attribute']
     hist_prompts = {}
     print('item2attribute', list(item2attribute.items())[:10])
     for uid, item_rating in sequence_data.items():
@@ -126,6 +130,10 @@ if __name__ == '__main__':
     DATA_DIR = '../data/'
     # DATA_SET_NAME = 'amz'
     DATA_SET_NAME = 'ml-1m'
+    if DATA_SET_NAME == 'ml-1m':
+        rating_threshold = 3
+    else:
+        rating_threshold = 4
     PROCESSED_DIR = os.path.join(DATA_DIR, DATA_SET_NAME, 'proc_data')
     SEQUENCE_PATH = os.path.join(PROCESSED_DIR, 'sequential_data.json')
     ITEM2ATTRIBUTE_PATH = os.path.join(PROCESSED_DIR, 'item2attributes.json')
