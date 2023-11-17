@@ -60,11 +60,13 @@ def generate_rerank_data(sequence_data, lm_hist_idx, uid_set, item_set):
 def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, dataset_name):
     itemid2title = datamap['itemid2title']
     attrid2name = datamap['id2attribute']
+    id2user = datamap['id2user']
     if dataset_name == 'ml-1m':
         user2attribute = datamap['user2attribute']
     hist_prompts = {}
     print('item2attribute', list(item2attribute.items())[:10])
     for uid, item_rating in sequence_data.items():
+        user = id2user[uid]
         item_seq, rating_seq = item_rating
         cur_idx = lm_hist_idx[uid]
         hist_item_seq = item_seq[:cur_idx]
@@ -82,7 +84,7 @@ def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, da
                      'setting, length and complexity, time period, literary quality, critical acclaim (Provide ' \
                      'clear explanations based on relevant details from the user\'s book viewing history and other ' \
                      'pertinent factors.'
-            hist_prompts[uid] = 'Given user\'s book rating history: ' + ''.join(history_texts) + prompt
+            hist_prompts[user] = 'Given user\'s book rating history: ' + ''.join(history_texts) + prompt
         elif dataset_name == 'ml-1m':
             gender, age, occupation = user2attribute[uid]
             user_text = 'Given a {} user who is aged {} and {}, this user\'s movie viewing history over time' \
@@ -92,7 +94,7 @@ def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, da
                        'period/country, character, plot/theme, mood/tone, critical acclaim/award, production quality, ' \
                        'and soundtrack). Provide clear explanations based on relevant details from the user\'s movie ' \
                        'viewing history and other pertinent factors.'
-            hist_prompts[uid] = user_text + ''.join(history_texts) + question
+            hist_prompts[user] = user_text + ''.join(history_texts) + question
         else:
             raise NotImplementedError
     print('data num', len(hist_prompts))
@@ -103,19 +105,21 @@ def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, da
 def generate_item_prompt(item2attribute, datamap, dataset_name):
     itemid2title = datamap['itemid2title']
     attrid2name = datamap['id2attribute']
+    id2item = datamap['id2item']
     item_prompts = {}
     for iid, title in itemid2title.items():
+        item = id2item[iid]
         if dataset_name == 'amz':
             brand, cate = item2attribute[str(iid)]
             brand_name = attrid2name[str(brand)]
             # cate_name = attrid2name[cate]
-            item_prompts[iid] = 'Introduce book {}, which is from brand {} and describe its attributes including but' \
+            item_prompts[item] = 'Introduce book {}, which is from brand {} and describe its attributes including but' \
                                 ' not limited to genre, author, writing style, theme, setting, length and complexity, ' \
                                 'time period, literary quality, critical acclaim.'.format(title, brand_name)
             # item_prompts[iid] = 'Introduce product {}, which is from brand {} and describe its attributes (including but' \
             #                     ' not limited to genre, functionality, quality, price, design, reputation).'.format(title, brand_name)
         elif dataset_name == 'ml-1m':
-            item_prompts[iid] = 'Introduce movie {} and describe its attributes (including but not limited to genre, ' \
+            item_prompts[item] = 'Introduce movie {} and describe its attributes (including but not limited to genre, ' \
                                 'director/cast, country, character, plot/theme, mood/tone, critical ' \
                                 'acclaim/award, production quality, and soundtrack).'.format(title)
         else:
