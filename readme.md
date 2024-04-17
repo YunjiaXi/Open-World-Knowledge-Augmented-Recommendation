@@ -1,6 +1,4 @@
 # Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models
-Source code for our paper :
-[Towards Open-World Recommendation with Knowledge Augmentation from Large Language Models](https://arxiv.org/abs/2306.10933)
 
 ## Requirements
 ```
