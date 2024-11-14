@@ -86,7 +86,7 @@ def generate_hist_prompt(sequence_data, item2attribute, datamap, lm_hist_idx, da
                      'pertinent factors.'
             hist_prompts[user] = 'Given user\'s book rating history: ' + ''.join(history_texts) + prompt
         elif dataset_name == 'ml-1m':
-            gender, age, occupation = user2attribute[uid]
+            gender, age, occupation = user2attribute[user]
             user_text = 'Given a {} user who is aged {} and {}, this user\'s movie viewing history over time' \
                         ' is listed below. '.format(GENDER_MAPPING[gender], AGE_MAPPING[age],
                                                     OCCUPATION_MAPPING[occupation])
